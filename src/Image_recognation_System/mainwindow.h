@@ -2,8 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include<QGraphicsView>
-#include<QPrinter>
+#include <QFileDialog>
+#include <QPrinter>
+#include <QPrintPreviewDialog>
+#include "imagedisplay.h"
+#include "MyTabWidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -16,37 +19,33 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-public:
 
-signals:
-    void mySignal(bool x);
+    void setImage(QImage *newImg);
 
 private:
-    Ui::MainWindow *ui;
-    QImage *image;
-    QGraphicsView * graphicview;
+    QMenu *subMenu;
+    QImage * image;
+    //暂时定义图片的高和宽
+    int imageHeight, imagewidth;
     QString saveFileName;
-    QGraphicsScene *scene;
-    QStringList* qstrl;
-    QList<QAction*> qlqa;
-private:
-    bool outputFile();
-    void saveRecentFile(const QStringList &qsl);
-    void readFromRecentFile( QStringList & qsl);
-    QImage * open(QString opFileName);
-    void recentFileChanged();
+    QStringList* recentFileList;
+    MyTabWidget* myTab;
+    Ui::MainWindow *ui;
 private slots:
     void openFileSlot();
     void saveFileSlot();
-    bool saveAsFileSlot();
+    void saveAsFileSlot();
     void printSlot();
-    void printPreviewSlot();
-    void printSettingSlot();
-    void recentFileSlot();
+    void printPreViewSlot();
     void exitSlot();
-    void paintRequestedSlot(QPrinter * printer);
-//    void manageActionWithRctFile();
-    void activeRctFileSlot(bool x);
+    void printPreviewSlot(QPrinter *printerPixmap);
+
+
+    void graySlot();
+public slots:
+    void setRecentFileEnableSlot();
+    void openRecentFile();
+    void clearAllRecentSlot();
 };
 
 #endif // MAINWINDOW_H
